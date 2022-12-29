@@ -51,7 +51,7 @@ pipeline {
         }
         stage('DeployToProduction') {
             environment { 
-                CANARY_REPLICAS =3
+                CANARY_REPLICAS =1
             }
             steps {
                 input 'Deploy to Production?'
