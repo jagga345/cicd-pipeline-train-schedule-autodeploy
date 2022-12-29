@@ -30,7 +30,7 @@ pipeline {
         stage('Push Docker Image') {
             steps {
                 script {
-                    docker.withRegistry('https://registry.hub.docker.com', 'jaggadocker_hub_login') {
+                    docker.withRegistry('https://registry.hub.docker.com', 'jaggadockerhubtoken') {
                         app.push("${env.BUILD_NUMBER}")
                         app.push("latest")
                     }
