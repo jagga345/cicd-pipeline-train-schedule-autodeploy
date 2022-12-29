@@ -1,8 +1,10 @@
 pipeline {
-    agent any
+    agent {
+        label 'javanode1'
+    }
     environment {
         //be sure to replace "bhavukm" with your own Docker Hub username
-        DOCKER_IMAGE_NAME = "bhavukm/train-schedule"
+        DOCKER_IMAGE_NAME = "uday987/train-schedule"
     }
     stages {
         stage('Build') {
@@ -14,7 +16,7 @@ pipeline {
         }
         stage('Build Docker Image') {
             when {
-                branch 'master'
+                   environment(name: "DOCKER_IMAGE_NAME", value: "uday987/train-schedule")
             }
             steps {
                 script {
@@ -26,9 +28,6 @@ pipeline {
             }
         }
         stage('Push Docker Image') {
-            when {
-                branch 'master'
-            }
             steps {
                 script {
                     docker.withRegistry('https://registry.hub.docker.com', 'docker_hub_login') {
@@ -39,9 +38,6 @@ pipeline {
             }
         }
         stage('CanaryDeploy') {
-            when {
-                branch 'master'
-            }
             environment { 
                 CANARY_REPLICAS = 1
             }
@@ -54,11 +50,8 @@ pipeline {
             }
         }
         stage('DeployToProduction') {
-            when {
-                branch 'master'
-            }
             environment { 
-                CANARY_REPLICAS = 0
+                CANARY_REPLICAS =2
             }
             steps {
                 input 'Deploy to Production?'
