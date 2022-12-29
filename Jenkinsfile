@@ -4,7 +4,7 @@ pipeline {
     }
     environment {
         //be sure to replace "bhavukm" with your own Docker Hub username
-        DOCKER_IMAGE_NAME = "uday987/train-schedule"
+        DOCKER_IMAGE_NAME = "jagga345/train-schedule"
     }
     stages {
         stage('Build') {
@@ -16,7 +16,7 @@ pipeline {
         }
         stage('Build Docker Image') {
             when {
-                   environment(name: "DOCKER_IMAGE_NAME", value: "uday987/train-schedule")
+                   environment(name: "DOCKER_IMAGE_NAME", value: "jagga345/train-schedule")
             }
             steps {
                 script {
@@ -30,7 +30,7 @@ pipeline {
         stage('Push Docker Image') {
             steps {
                 script {
-                    docker.withRegistry('https://registry.hub.docker.com', 'docker_hub_login') {
+                    docker.withRegistry('https://registry.hub.docker.com', 'jaggadocker_hub_login') {
                         app.push("${env.BUILD_NUMBER}")
                         app.push("latest")
                     }
